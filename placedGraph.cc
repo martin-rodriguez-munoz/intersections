@@ -6,6 +6,7 @@
 using namespace std;
 
 double C = 1.0/3.0;
+//Constructor places the data from the text files into "edges" and "nodes"
 placedGraph::placedGraph(const string& filename)
 {
     try
@@ -65,14 +66,14 @@ bool placedGraph::intersect(Edge a, Edge b) const
 }
 
 //Takes in a vector of edges returns the number of intersections of those edges
-int placedGraph::bruteforce(const vector<Edge> &alledges) const
+int placedGraph::bruteforce(const vector<Edge> &vectorOfEdges) const
 {
     int ans = 0;
-    for (unsigned int i = 0; i < alledges.size(); ++i)
+    for (unsigned int i = 0; i < vectorOfEdges.size(); ++i)
     {
         for (unsigned int j = 0; j < i; ++j)
         {
-            if (intersect(alledges[i],alledges[j]))
+            if (intersect(vectorOfEdges[i],vectorOfEdges[j]))
             {
                 ++ans;
             } 
@@ -81,18 +82,21 @@ int placedGraph::bruteforce(const vector<Edge> &alledges) const
     return ans;
 }
 
-int placedGraph::calcNumCrossing(const vector<Edge> &alledges, double line, double step) const
+//Returns the number of intersections in vectorOfEdges
+//Seperates the vector into left and right based of which side of line they are
+//Calculates the number of intersects on both sides and substracts the intersections that were counted twice
+int placedGraph::calcNumCrossing(const vector<Edge> &vectorOfEdges, double line, double step) const
 {
-    if (alledges.size() <= 50)
+    if (vectorOfEdges.size() <= 50)
     {
-        return bruteforce(alledges);
+        return bruteforce(vectorOfEdges);
     }
     
     vector<Edge> left;
     vector<Edge> center;
     vector<Edge> right;
     
-    for (Edge e : alledges)
+    for (Edge e : vectorOfEdges)
     {
         if (nodes[e.u].x <= line and nodes[e.v].x <= line)
         {
@@ -109,17 +113,19 @@ int placedGraph::calcNumCrossing(const vector<Edge> &alledges, double line, doub
             center.push_back(e);
         }
     }
-        
-    if (double(center.size())/double(left.size()+right.size()-center.size()) < C)
+    
+    //This condition determines if it is faster to do recursion than do brute force
+    if (double(center.size())/double(left.size()+right.size()-center.size()) < C) //We want at most 1/3 of the edges to be center edges
     {
         int toreturn = calcNumCrossing(left,line-step,step/2);
         toreturn += calcNumCrossing(right,line+step,step/2);
         toreturn -= bruteforce(center);
         return toreturn;
     }
-    return bruteforce(alledges);
+    return bruteforce(vectorOfEdges);
 }
 
+//Returns the number of intersections of the graph
 int placedGraph::numCrossings() const
 {
     return calcNumCrossing(edges,0,0.5);

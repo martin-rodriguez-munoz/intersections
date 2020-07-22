@@ -35,6 +35,6 @@ private:
     bool sameSide(Edge e, Node a, Node b) const;
     bool shareNode(Edge a, Edge b) const;
     bool intersect(Edge a, Edge b) const;
-    int bruteforce(const std::vector<Edge> &alledges) const;
-    int calcNumCrossing(const std::vector<Edge> &alledges, double line, double step) const;
+    int bruteforce(const std::vector<Edge> &vectorOfEdges) const;
+    int calcNumCrossing(const std::vector<Edge> &vectorOfEdges, double line, double step) const;
 };
