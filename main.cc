@@ -10,6 +10,7 @@ int main(int argc, char *argv[]) {
   }
 
   placedGraph G(argv[1]);
+  
 
   const string &err = G.getError();
   if (not err.empty()) {

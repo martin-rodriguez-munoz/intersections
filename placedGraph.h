@@ -32,6 +32,9 @@ private:
     std::vector<Edge> edges;     // List of edges
     std::string error;           // Error message
     
+    bool sameSide(Edge e, Node a, Node b) const;
+    bool shareNode(Edge a, Edge b) const;
+    bool intersect(Edge a, Edge b) const;
     int bruteforce(const std::vector<Edge> &alledges) const;
-    int calcNumCrossing(const std::vector<Edge> &alledges, double line, double step);
+    int calcNumCrossing(const std::vector<Edge> &alledges, double line, double step) const;
 };
