@@ -17,7 +17,8 @@ int main(int argc, char *argv[]) {
     cerr << "Error: " << err << endl;
     return 1;
   }
-
-  cout << "Number of crossings: " << G.numCrossings() << endl;
+	
+  //cout << "Number of crossings: "
+  cout << G.numCrossings() << endl;
   return 0;
 }
